@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Git</title>
 
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="stylesheet" href="css/reveal.css">
@@ -25,8 +25,243 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section><h1>Git</h1></section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							## Grands principes
+							* Repository
+							* Index
+							* Commit
+							* Branches
+							* Tag
+							* Stash
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Repository
+							* Distant :
+								* Hébergé sur un serveur (Github, Gitlab, TFS, Gitbucket)
+								* Accessible via protocoles HTTP(S) ou SSH
+							* Local :
+								* Système de fichiers
+								* Clôné à partir d'un repository distant
+								```
+								git clone [url]
+								```
+								* Ou créé manuellement dans un répertoire
+								```
+								git init
+								git remote set-url origin [url]
+								```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Index
+							* Sorte de "sas" permettant de préparer un commit
+							* Tout ce qui est indexé est commité
+							* Il est possible d'ajouter dans l'index :
+								* Un fichier :
+								* Une partie des changements apportés sur fichier :
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Commit
+							* Doit être atomique, et auto-documenté
+							* Est identifié par un identifiant unique (SHA-1)
+							* Pas de norme commune (ni Cdiscount ni mondiale)
+							* [Les règles de commit d'AngularJS](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)
+							```
+							<type>(<scope>): <subject>
+							<BLANK LINE>
+							<body>
+							<BLANK LINE>
+							<footer>
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Branches
+							* Le travail sous Git se fait toujours dans une branche
+							* Une branche peut être
+								* Locale, modifiable ==> "master"
+								* Et/ou distante, non modifiable ==> "origin/master"
+							* Switch de branche via :
+							```
+							git checkout [nom de la branche existante]
+							```
+							ou
+							```
+							git checkout -b [nom de la nouvelle branche à créer]
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Branches de référence
+							* "master", "develop", "release-x", ...
+							* Leurs durées de vie coincident :
+								* Avec celle du repository
+								* Avec la maintenance d'une version applicative
+							* Ne doivent jamais être modifiées par un humain :
+								* Pull-request favorisant le partage et la validation
+								* Build de release favorisant l'automatisation
+							* Sont utilisées comme base par la CICD :
+								* Pour effectuer des releases
+								* Pour effectuer des déploiements
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Branches de travail
+							* Créées à partir d'une branche de référence
+							* Volatiles
+							* Intégration dans une branche de référence via pull-request
+							* Leurs noms doivent :
+								* Etre succincts
+								* Résumer le périmètre fonctionnel qu'elles traitent
+							* Généralement personnelles
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Tag
+							* Etiquette posée sur un commit
+							* Identifie une version mise à disposition des utilisateurs
+							* Nommage respectant généralement le [semver](https://semver.org)
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## Stash
+							* Traduction litérale : "remisage"
+							* Espace de sauvegarde hors branches/commits
+							* Utilisé en général pour sauvegarder temporairement un état instable
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							### En résumé
+							![Git schema](git-schema.png)
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							## Utilisation basique
+							* git status
+							* git diff
+							* git add
+							* git commit
+							* git reset
+							* git pull
+							* git push
+							* Résolution de conflits
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## git status
+							* Permet de savoir :
+								* Dans quelle branche on travaille
+								* Les modifications en cours indexées et non indexées
+								* Les divergences avec la branche distante
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## git diff
+							* Permet de visualiser les changements apportés :
+								* Dans sa copie de travail
+								* Dans son index
+								* Entre 2 commits
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## git add
+							* Ajout de toutes les modifications à l'index
+							```
+							git add .
+							```
+							* Ajout d'un fichier à l'index
+							```
+							git add chemin/du/fichier
+							```
+							* Une partie des changements apportés sur fichier :
+							```
+							git add -p
+							```
+							ou
+							```
+							git add -i
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## git commit
+							* Commiter sur sa branche locale à partir de l'index
+							```
+							git commit
+							```
+							* En précisant le message de commit
+							```
+							git commit -m "feat: ma feature"
+							```
+							* Amender (modifier) le dernier commit de la branche
+							```
+							git commit --amend
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## git reset
+							* Permet de positionner son "HEAD" sur un commit spécifique
+							* En gardant les modifications localement
+							```
+							git reset origin/master
+							git reset HEAD~1
+							```
+							* En écrasant toute modification
+							```
+							git reset --hard [sha1 commit]
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							## git pull
+							* Permet de récupérer les modifications faites sur le repository distant
+							* En réalité, succession des commandes "git fetch" et "git merge"
+							* Pour garder un arbre plus propre en cas de modifications locales :
+							```
+							git pull -r origin master
+							```
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+							### Utilisation (un peu plus) avancée
+							* git commit --fixup
+							* git rebase
+							* git cherry-pick
+							* git stash
+							* git revert
+							* git reflog
+						</textarea>
+					</section>
+				</section>
+				<section data-markdown><textarea data-template>
+				</textarea></section>
 			</div>
 		</div>
 
